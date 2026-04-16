@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mood Music Sample App</title>
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="hero-panel">
+        <div class="hero-copy">
+          <p class="eyebrow">Shareable sample website</p>
+          <h1>Mood Music</h1>
+          <p class="intro">
+            A simple music recommendation website that turns a mood into a song
+            suggestion you can play instantly.
+          </p>
+          <div class="hero-meta">
+            <span>4 moods</span>
+            <span>Instant random picks</span>
+            <span>YouTube playback</span>
+          </div>
+        </div>
+
+        <form method="post" class="mood-grid">
+          {% for mood in mood_cards %}
+          <button
+            type="submit"
+            name="mood"
+            value="{{ mood.key }}"
+            class="mood-button mood-{{ mood.key }}{% if selected_mood == mood.key %} is-active{% endif %}"
+          >
+            <span class="mood-name">{{ mood.label }}</span>
+            <span class="mood-description">{{ mood.description }}</span>
+            <span class="mood-count">{{ mood.count }} songs</span>
+          </button>
+          {% endfor %}
+        </form>
+      </section>
+
+      <section class="result-card">
+        {% if recommendation %}
+        <p class="result-label">{{ recommendation.mood_label }} pick</p>
+        <h2>{{ recommendation.title }}</h2>
+        <p class="artist">{{ recommendation.artist }}</p>
+        <p class="result-description">{{ recommendation.mood_description }}</p>
+        <div class="actions">
+          <a href="{{ recommendation.url }}" target="_blank" rel="noreferrer">
+            Open on YouTube
+          </a>
+          <a href="/api/recommendation?mood={{ recommendation.mood_key }}" class="ghost-link">
+            Sample API JSON
+          </a>
+        </div>
+        <div class="video-frame">
+          <iframe
+            src="{{ recommendation.embed_url }}"
+            title="{{ recommendation.title }}"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <p class="footnote">
+          Randomized from {{ recommendation.song_count }} songs in the
+          {{ recommendation.mood_label|lower }} playlist.
+        </p>
+        {% else %}
+        <p class="result-label">Ready</p>
+        <h2>Your recommendation will show up here.</h2>
+        <p class="artist">
+          Choose a mood to get a random song and a playable preview.
+        </p>
+        {% endif %}
+      </section>
+    </main>
+  </body>
+</html>
