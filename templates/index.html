@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mood Music Sample App</title>
+    <title>{{ app_name }}</title>
     <link
       rel="preconnect"
       href="https://fonts.googleapis.com"
@@ -26,14 +26,15 @@
     <main class="page-shell">
       <section class="hero-panel">
         <div class="hero-copy">
-          <p class="eyebrow">Shareable sample website</p>
-          <h1>Mood Music</h1>
+          <p class="eyebrow">Shareable mood website</p>
+          <h1>{{ app_name }}</h1>
           <p class="intro">
-            A simple music recommendation website that turns a mood into a song
-            suggestion you can play instantly.
+            A bigger mood-based music app with mainstream singers, Billie picks,
+            famous rappers, and playlist-style recommendations you can open fast.
           </p>
           <div class="hero-meta">
-            <span>4 moods</span>
+            <span>{{ total_moods }} moods</span>
+            <span>{{ total_tracks }} tracks</span>
             <span>Instant random picks</span>
             <span>YouTube playback</span>
           </div>
@@ -69,6 +70,7 @@
             Sample API JSON
           </a>
         </div>
+        {% if recommendation.embed_url %}
         <div class="video-frame">
           <iframe
             src="{{ recommendation.embed_url }}"
@@ -77,6 +79,12 @@
             allowfullscreen
           ></iframe>
         </div>
+        {% else %}
+        <div class="video-fallback">
+          <p>No direct embed for this pick yet.</p>
+          <p>Use the YouTube button above to open the song or playlist search.</p>
+        </div>
+        {% endif %}
         <p class="footnote">
           Randomized from {{ recommendation.song_count }} songs in the
           {{ recommendation.mood_label|lower }} playlist.
