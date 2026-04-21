@@ -29,8 +29,8 @@
           <p class="eyebrow">Shareable mood website</p>
           <h1>{{ app_name }}</h1>
           <p class="intro">
-            A bigger mood-based music app with mainstream singers, Billie picks,
-            famous rappers, and playlist-style recommendations you can open fast.
+            A bigger mood-based music app with Billie picks, famous rappers,
+            huge mood playlists, and fast YouTube playback for every mood.
           </p>
           <div class="hero-meta">
             <span>{{ total_moods }} moods</span>
@@ -58,6 +58,13 @@
 
       <section class="result-card">
         {% if recommendation %}
+        <div class="artwork-shell">
+          <img
+            src="{{ recommendation.art_url }}"
+            alt="Artwork for {{ recommendation.title }} by {{ recommendation.artist }}"
+            class="artwork-image"
+          />
+        </div>
         <p class="result-label">{{ recommendation.mood_label }} pick</p>
         <h2>{{ recommendation.title }}</h2>
         <p class="artist">{{ recommendation.artist }}</p>
@@ -70,7 +77,6 @@
             Sample API JSON
           </a>
         </div>
-        {% if recommendation.embed_url %}
         <div class="video-frame">
           <iframe
             src="{{ recommendation.embed_url }}"
@@ -79,12 +85,6 @@
             allowfullscreen
           ></iframe>
         </div>
-        {% else %}
-        <div class="video-fallback">
-          <p>No direct embed for this pick yet.</p>
-          <p>Use the YouTube button above to open the song or playlist search.</p>
-        </div>
-        {% endif %}
         <p class="footnote">
           Randomized from {{ recommendation.song_count }} songs in the
           {{ recommendation.mood_label|lower }} playlist.
