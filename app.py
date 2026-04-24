@@ -74,6 +74,7 @@ def index():
         total_moods=len(MOOD_LIBRARY),
         total_playlists=total_playlists,
         active_playlists=active_playlists,
+        active_playlist_data=active_playlists,
     )
 
 

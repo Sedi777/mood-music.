@@ -63,13 +63,14 @@
             src="{{ recommendation.art_url }}"
             alt="Artwork for {{ recommendation.title }} by {{ recommendation.artist }}"
             class="artwork-image"
+            id="artwork-image"
           />
         </div>
-        <p class="result-label">{{ recommendation.mood_label }} pick</p>
-        <h2>{{ recommendation.title }}</h2>
+        <p class="result-label" id="result-label">{{ recommendation.mood_label }} pick</p>
+        <h2 id="playlist-title">{{ recommendation.title }}</h2>
         <p class="artist">Curated YouTube playlist</p>
-        <p class="result-description">{{ recommendation.mood_description }}</p>
-        <p class="playlist-note">{{ recommendation.note }}</p>
+        <p class="result-description" id="mood-description">{{ recommendation.mood_description }}</p>
+        <p class="playlist-note" id="playlist-note">{{ recommendation.note }}</p>
         <div class="actions">
           <a href="{{ recommendation.url }}" target="_blank" rel="noreferrer">
             Open on YouTube
@@ -86,20 +87,22 @@
             name="playlist_index"
             value="{{ loop.index0 }}"
             class="playlist-chip{% if recommendation.playlist_index == loop.index0 %} is-active{% endif %}"
+            data-playlist-index="{{ loop.index0 }}"
           >
             {{ playlist.title }}
           </button>
           {% endfor %}
         </form>
         <div class="video-frame">
-          <iframe
-            src="{{ recommendation.embed_url }}"
-            title="{{ recommendation.title }}"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
+          <div
+            id="youtube-player"
+            data-start-index="{{ recommendation.playlist_index }}"
+            data-playlists='{{ active_playlist_data | tojson }}'
+            data-mood-label="{{ recommendation.mood_label }}"
+            data-mood-description="{{ recommendation.mood_description }}"
+          ></div>
         </div>
-        <p class="footnote">
+        <p class="footnote" id="footnote">
           Showing playlist {{ recommendation.playlist_index + 1 }} of
           {{ recommendation.playlist_count }} in the
           {{ recommendation.mood_label|lower }} mood.
@@ -113,5 +116,95 @@
         {% endif %}
       </section>
     </main>
+    {% if recommendation %}
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+      const playerRoot = document.getElementById("youtube-player");
+      const playlistData = JSON.parse(playerRoot.dataset.playlists);
+      const moodLabel = playerRoot.dataset.moodLabel;
+      const moodDescription = playerRoot.dataset.moodDescription;
+      const artworkImage = document.getElementById("artwork-image");
+      const playlistTitle = document.getElementById("playlist-title");
+      const playlistNote = document.getElementById("playlist-note");
+      const footnote = document.getElementById("footnote");
+      const chips = Array.from(document.querySelectorAll(".playlist-chip"));
+      let currentIndex = Number(playerRoot.dataset.startIndex || 0);
+      let player;
+
+      function artworkUrl(videoId) {
+        return `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+      }
+
+      function watchUrl(videoId) {
+        return `https://www.youtube.com/watch?v=${videoId}`;
+      }
+
+      function updateOpenButton(videoId) {
+        const openButton = document.querySelector(".actions a");
+        if (openButton) {
+          openButton.href = watchUrl(videoId);
+        }
+      }
+
+      function updatePlaylistDetails(index) {
+        const current = playlistData[index];
+        artworkImage.src = artworkUrl(current.youtube_id);
+        artworkImage.alt = `Artwork for ${current.title}`;
+        playlistTitle.textContent = current.title;
+        playlistNote.textContent = current.note;
+        document.getElementById("mood-description").textContent = moodDescription;
+        footnote.textContent = `Showing playlist ${index + 1} of ${playlistData.length} in the ${moodLabel.toLowerCase()} mood.`;
+        updateOpenButton(current.youtube_id);
+        chips.forEach((chip) => {
+          chip.classList.toggle("is-active", Number(chip.dataset.playlistIndex) === index);
+        });
+      }
+
+      function loadPlaylist(index) {
+        currentIndex = index;
+        const current = playlistData[currentIndex];
+        updatePlaylistDetails(currentIndex);
+        if (player && typeof player.loadVideoById === "function") {
+          player.loadVideoById(current.youtube_id);
+        }
+      }
+
+      function nextPlaylist() {
+        const nextIndex = (currentIndex + 1) % playlistData.length;
+        loadPlaylist(nextIndex);
+      }
+
+      chips.forEach((chip) => {
+        chip.addEventListener("click", (event) => {
+          event.preventDefault();
+          loadPlaylist(Number(chip.dataset.playlistIndex));
+        });
+      });
+
+      function onPlayerReady() {
+        updatePlaylistDetails(currentIndex);
+      }
+
+      function onPlayerStateChange(event) {
+        if (event.data === YT.PlayerState.ENDED) {
+          nextPlaylist();
+        }
+      }
+
+      window.onYouTubeIframeAPIReady = function () {
+        player = new YT.Player("youtube-player", {
+          videoId: playlistData[currentIndex].youtube_id,
+          playerVars: {
+            rel: 0,
+            modestbranding: 1,
+          },
+          events: {
+            onReady: onPlayerReady,
+            onStateChange: onPlayerStateChange,
+          },
+        });
+      };
+    </script>
+    {% endif %}
   </body>
 </html>
