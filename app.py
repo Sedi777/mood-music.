@@ -31,6 +31,7 @@ def build_recommendation(mood_key: str, playlist_index: int = 0) -> dict | None:
     safe_index = max(0, min(playlist_index, len(playlists) - 1))
     current = playlists[safe_index].copy()
     current["url"] = youtube_watch_url(current["youtube_id"])
+    current["play_all_url"] = current.get("playlist_url") or current["url"]
     current["embed_url"] = youtube_embed_url(current["youtube_id"])
     current["art_url"] = youtube_art_url(current["youtube_id"])
     current["mood_key"] = mood_key
@@ -38,6 +39,7 @@ def build_recommendation(mood_key: str, playlist_index: int = 0) -> dict | None:
     current["mood_description"] = mood["description"]
     current["playlist_count"] = len(playlists)
     current["playlist_index"] = safe_index
+    current["has_full_playlist_url"] = bool(current.get("playlist_url"))
     return current
 
 

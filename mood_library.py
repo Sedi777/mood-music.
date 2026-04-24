@@ -4,11 +4,12 @@ from __future__ import annotations
 APP_NAME = "MoodMix"
 
 
-def playlist(title: str, youtube_id: str, note: str) -> dict:
+def playlist(title: str, youtube_id: str, note: str, playlist_url: str | None = None) -> dict:
     return {
         "title": title,
         "youtube_id": youtube_id,
         "note": note,
+        "playlist_url": playlist_url,
     }
 
 
