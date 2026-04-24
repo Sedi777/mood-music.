@@ -7,12 +7,8 @@
   --panel-strong: rgba(255, 255, 255, 0.84);
   --shadow: 0 24px 80px rgba(20, 33, 61, 0.14);
   --happy: #ffbf69;
-  --confident: #ff9f1c;
-  --chill: #95d5b2;
   --sad: #8ecae6;
   --tired: #b8a1ff;
-  --angry: #ff7b7b;
-  --romantic: #ffafcc;
   --focus: #a0c4ff;
   --outline: rgba(255, 255, 255, 0.58);
 }
@@ -193,24 +189,8 @@ h2 {
   background: var(--sad);
 }
 
-.mood-confident {
-  background: var(--confident);
-}
-
-.mood-chill {
-  background: var(--chill);
-}
-
 .mood-tired {
   background: var(--tired);
-}
-
-.mood-angry {
-  background: var(--angry);
-}
-
-.mood-romantic {
-  background: var(--romantic);
 }
 
 .mood-focus {
@@ -240,6 +220,37 @@ h2 {
 .actions .ghost-link {
   color: var(--text);
   background: rgba(255, 255, 255, 0.65);
+}
+
+.playlist-note {
+  margin: 14px 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.playlist-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 18px;
+}
+
+.playlist-chip {
+  border: 1px solid rgba(20, 33, 61, 0.16);
+  border-radius: 999px;
+  min-height: 40px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.playlist-chip.is-active {
+  background: #111827;
+  color: white;
 }
 
 .result-card {

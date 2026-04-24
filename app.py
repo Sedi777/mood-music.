@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import os
-import random
-from urllib.parse import quote_plus
 
 from flask import Flask, jsonify, render_template, request
 
@@ -12,11 +10,8 @@ from mood_library import APP_NAME, MOOD_LIBRARY
 app = Flask(__name__)
 
 
-def youtube_watch_url(video_id: str | None, title: str, artist: str) -> str:
-    if video_id:
-        return f"https://www.youtube.com/watch?v={video_id}"
-    query = quote_plus(f"{artist} {title} official")
-    return f"https://www.youtube.com/results?search_query={query}"
+def youtube_watch_url(video_id: str) -> str:
+    return f"https://www.youtube.com/watch?v={video_id}"
 
 
 def youtube_embed_url(video_id: str) -> str:
@@ -27,46 +22,48 @@ def youtube_art_url(video_id: str) -> str:
     return f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg"
 
 
-def build_recommendation(mood_key: str) -> dict | None:
+def build_recommendation(mood_key: str, playlist_index: int = 0) -> dict | None:
     mood = MOOD_LIBRARY.get(mood_key)
     if not mood:
         return None
 
-    fallback_video_id = mood["fallback_video_id"]
-    track = random.choice(mood["songs"]).copy()
-    active_video_id = track.get("youtube_id") or fallback_video_id
-
-    track["url"] = youtube_watch_url(track.get("youtube_id"), track["title"], track["artist"])
-    track["embed_url"] = youtube_embed_url(active_video_id)
-    track["art_url"] = youtube_art_url(active_video_id)
-    track["mood_key"] = mood_key
-    track["mood_label"] = mood["label"]
-    track["mood_description"] = mood["description"]
-    track["song_count"] = len(mood["songs"])
-    track["has_exact_video"] = bool(track.get("youtube_id"))
-    return track
+    playlists = mood["playlists"]
+    safe_index = max(0, min(playlist_index, len(playlists) - 1))
+    current = playlists[safe_index].copy()
+    current["url"] = youtube_watch_url(current["youtube_id"])
+    current["embed_url"] = youtube_embed_url(current["youtube_id"])
+    current["art_url"] = youtube_art_url(current["youtube_id"])
+    current["mood_key"] = mood_key
+    current["mood_label"] = mood["label"]
+    current["mood_description"] = mood["description"]
+    current["playlist_count"] = len(playlists)
+    current["playlist_index"] = safe_index
+    return current
 
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     selected_mood = "happy"
-    recommendation = build_recommendation(selected_mood)
+    selected_playlist_index = 0
 
     if request.method == "POST":
         selected_mood = request.form.get("mood", "happy").lower()
-        recommendation = build_recommendation(selected_mood) or recommendation
+        selected_playlist_index = int(request.form.get("playlist_index", "0"))
+
+    recommendation = build_recommendation(selected_mood, selected_playlist_index)
 
     mood_cards = [
         {
             "key": mood_key,
             "label": mood["label"],
             "description": mood["description"],
-            "count": len(mood["songs"]),
+            "count": len(mood["playlists"]),
         }
         for mood_key, mood in MOOD_LIBRARY.items()
     ]
 
-    total_tracks = sum(len(mood["songs"]) for mood in MOOD_LIBRARY.values())
+    total_playlists = sum(len(mood["playlists"]) for mood in MOOD_LIBRARY.values())
+    active_playlists = MOOD_LIBRARY[selected_mood]["playlists"]
 
     return render_template(
         "index.html",
@@ -75,14 +72,16 @@ def index():
         selected_mood=selected_mood,
         recommendation=recommendation,
         total_moods=len(MOOD_LIBRARY),
-        total_tracks=total_tracks,
+        total_playlists=total_playlists,
+        active_playlists=active_playlists,
     )
 
 
 @app.get("/api/recommendation")
 def api_recommendation():
     mood_key = request.args.get("mood", "happy").lower()
-    recommendation = build_recommendation(mood_key)
+    playlist_index = int(request.args.get("playlist_index", "0"))
+    recommendation = build_recommendation(mood_key, playlist_index)
     if recommendation is None:
         return jsonify({"error": "Unknown mood"}), 404
     return jsonify(recommendation)

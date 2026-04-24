@@ -29,13 +29,13 @@
           <p class="eyebrow">Shareable mood website</p>
           <h1>{{ app_name }}</h1>
           <p class="intro">
-            A bigger mood-based music app with Billie picks, famous rappers,
-            huge mood playlists, and fast YouTube playback for every mood.
+            A cleaner four-mood version built around your exact YouTube playlist
+            links, without mixing moods together.
           </p>
           <div class="hero-meta">
             <span>{{ total_moods }} moods</span>
-            <span>{{ total_tracks }} tracks</span>
-            <span>Instant random picks</span>
+            <span>{{ total_playlists }} playlists</span>
+            <span>Curated mood picks</span>
             <span>YouTube playback</span>
           </div>
         </div>
@@ -50,7 +50,7 @@
           >
             <span class="mood-name">{{ mood.label }}</span>
             <span class="mood-description">{{ mood.description }}</span>
-            <span class="mood-count">{{ mood.count }} songs</span>
+            <span class="mood-count">{{ mood.count }} playlists</span>
           </button>
           {% endfor %}
         </form>
@@ -67,8 +67,9 @@
         </div>
         <p class="result-label">{{ recommendation.mood_label }} pick</p>
         <h2>{{ recommendation.title }}</h2>
-        <p class="artist">{{ recommendation.artist }}</p>
+        <p class="artist">Curated YouTube playlist</p>
         <p class="result-description">{{ recommendation.mood_description }}</p>
+        <p class="playlist-note">{{ recommendation.note }}</p>
         <div class="actions">
           <a href="{{ recommendation.url }}" target="_blank" rel="noreferrer">
             Open on YouTube
@@ -77,6 +78,19 @@
             Sample API JSON
           </a>
         </div>
+        <form method="post" class="playlist-switcher">
+          <input type="hidden" name="mood" value="{{ selected_mood }}" />
+          {% for playlist in active_playlists %}
+          <button
+            type="submit"
+            name="playlist_index"
+            value="{{ loop.index0 }}"
+            class="playlist-chip{% if recommendation.playlist_index == loop.index0 %} is-active{% endif %}"
+          >
+            {{ playlist.title }}
+          </button>
+          {% endfor %}
+        </form>
         <div class="video-frame">
           <iframe
             src="{{ recommendation.embed_url }}"
@@ -86,8 +100,9 @@
           ></iframe>
         </div>
         <p class="footnote">
-          Randomized from {{ recommendation.song_count }} songs in the
-          {{ recommendation.mood_label|lower }} playlist.
+          Showing playlist {{ recommendation.playlist_index + 1 }} of
+          {{ recommendation.playlist_count }} in the
+          {{ recommendation.mood_label|lower }} mood.
         </p>
         {% else %}
         <p class="result-label">Ready</p>
