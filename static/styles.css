@@ -338,6 +338,7 @@ h2 {
   background: #cbd5e1;
 }
 
+.video-frame > div,
 .video-frame iframe {
   position: absolute;
   inset: 0;
