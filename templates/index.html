@@ -14,7 +14,7 @@
       crossorigin
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -25,18 +25,20 @@
   <body>
     <main class="page-shell">
       <section class="hero-panel">
+        <div class="hero-orb hero-orb-one"></div>
+        <div class="hero-orb hero-orb-two"></div>
         <div class="hero-copy">
-          <p class="eyebrow">Shareable mood website</p>
+          <p class="eyebrow">Curated playlist website</p>
           <h1>{{ app_name }}</h1>
           <p class="intro">
-            A cleaner four-mood version built around your exact YouTube playlist
-            links, without mixing moods together.
+            Four focused moods, your exact YouTube playlists, and a player that
+            stays inside each playlist until it finishes before moving on.
           </p>
           <div class="hero-meta">
             <span>{{ total_moods }} moods</span>
             <span>{{ total_playlists }} playlists</span>
-            <span>Curated mood picks</span>
-            <span>YouTube playback</span>
+            <span>Playlists stay in order</span>
+            <span>Modern mood player</span>
           </div>
         </div>
 
@@ -58,13 +60,16 @@
 
       <section class="result-card">
         {% if recommendation %}
-        <div class="artwork-shell">
-          <img
-            src="{{ recommendation.art_url }}"
-            alt="Artwork for {{ recommendation.title }} by {{ recommendation.artist }}"
-            class="artwork-image"
-            id="artwork-image"
-          />
+        <div class="playlist-poster mood-{{ selected_mood }}" id="playlist-poster">
+          <div class="poster-topline">{{ recommendation.mood_label }} mood</div>
+          <div class="poster-title" id="poster-title">{{ recommendation.title }}</div>
+          <div class="poster-bars" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="poster-footer" id="poster-footer">Playlist {{ recommendation.playlist_index + 1 }} / {{ recommendation.playlist_count }}</div>
         </div>
         <p class="result-label" id="result-label">{{ recommendation.mood_label }} pick</p>
         <h2 id="playlist-title">{{ recommendation.title }}</h2>
@@ -77,9 +82,6 @@
           </a>
           <a href="{{ recommendation.play_all_url }}" target="_blank" rel="noreferrer" class="ghost-link">
             Play Full Playlist
-          </a>
-          <a href="/api/recommendation?mood={{ recommendation.mood_key }}" class="ghost-link">
-            Sample API JSON
           </a>
         </div>
         <form method="post" class="playlist-switcher">
@@ -103,6 +105,7 @@
             data-playlists='{{ active_playlist_data | tojson }}'
             data-mood-label="{{ recommendation.mood_label }}"
             data-mood-description="{{ recommendation.mood_description }}"
+            data-selected-mood="{{ selected_mood }}"
           ></div>
         </div>
         <p class="footnote" id="footnote">
@@ -126,38 +129,36 @@
       const playlistData = JSON.parse(playerRoot.dataset.playlists);
       const moodLabel = playerRoot.dataset.moodLabel;
       const moodDescription = playerRoot.dataset.moodDescription;
-      const artworkImage = document.getElementById("artwork-image");
+      const selectedMood = playerRoot.dataset.selectedMood;
       const playlistTitle = document.getElementById("playlist-title");
+      const posterTitle = document.getElementById("poster-title");
+      const posterFooter = document.getElementById("poster-footer");
       const playlistNote = document.getElementById("playlist-note");
       const footnote = document.getElementById("footnote");
       const chips = Array.from(document.querySelectorAll(".playlist-chip"));
+      const playAllButton = document.querySelector('.actions .ghost-link');
       let currentIndex = Number(playerRoot.dataset.startIndex || 0);
       let player;
 
-      function artworkUrl(videoId) {
-        return `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
-      }
-
-      function watchUrl(videoId) {
-        return `https://www.youtube.com/watch?v=${videoId}`;
-      }
-
-      function updateOpenButton(videoId) {
+      function updateActionButtons(current) {
         const openButton = document.querySelector(".actions a");
         if (openButton) {
-          openButton.href = watchUrl(videoId);
+          openButton.href = current.playlist_url;
+        }
+        if (playAllButton) {
+          playAllButton.href = current.playlist_url;
         }
       }
 
       function updatePlaylistDetails(index) {
         const current = playlistData[index];
-        artworkImage.src = artworkUrl(current.youtube_id);
-        artworkImage.alt = `Artwork for ${current.title}`;
         playlistTitle.textContent = current.title;
+        posterTitle.textContent = current.title;
+        posterFooter.textContent = `Playlist ${index + 1} / ${playlistData.length}`;
         playlistNote.textContent = current.note;
         document.getElementById("mood-description").textContent = moodDescription;
         footnote.textContent = `Showing playlist ${index + 1} of ${playlistData.length} in the ${moodLabel.toLowerCase()} mood.`;
-        updateOpenButton(current.youtube_id);
+        updateActionButtons(current);
         chips.forEach((chip) => {
           chip.classList.toggle("is-active", Number(chip.dataset.playlistIndex) === index);
         });
@@ -167,8 +168,13 @@
         currentIndex = index;
         const current = playlistData[currentIndex];
         updatePlaylistDetails(currentIndex);
-        if (player && typeof player.loadVideoById === "function") {
-          player.loadVideoById(current.youtube_id);
+        if (player && typeof player.loadPlaylist === "function") {
+          player.loadPlaylist({
+            listType: "playlist",
+            list: current.playlist_id,
+            index: 0,
+            startSeconds: 0,
+          });
         }
       }
 
@@ -196,8 +202,9 @@
 
       window.onYouTubeIframeAPIReady = function () {
         player = new YT.Player("youtube-player", {
-          videoId: playlistData[currentIndex].youtube_id,
           playerVars: {
+            listType: "playlist",
+            list: playlistData[currentIndex].playlist_id,
             rel: 0,
             modestbranding: 1,
           },

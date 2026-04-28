@@ -4,87 +4,83 @@ from __future__ import annotations
 APP_NAME = "MoodMix"
 
 
-def playlist(title: str, youtube_id: str, note: str, playlist_url: str | None = None) -> dict:
+def playlist(title: str, playlist_url: str, note: str, cover_video_id: str | None = None) -> dict:
     return {
         "title": title,
-        "youtube_id": youtube_id,
-        "note": note,
         "playlist_url": playlist_url,
+        "note": note,
+        "cover_video_id": cover_video_id,
     }
 
 
 MOOD_LIBRARY = {
     "happy": {
         "label": "Happy",
-        "description": "Upbeat pop and bright energy from your curated YouTube picks.",
+        "description": "Bright, catchy playlist picks for a feel-good mood lift.",
         "playlists": [
             playlist(
-                "Happy Playlist 1",
-                "ko70cExuzZM",
-                "Your first happy playlist pick for feel-good energy.",
+                "Happy Hit Mix",
+                "https://youtube.com/playlist?list=PLOHoVaTp8R7d3L_pjuwIa6nRh4tH5nI4x&si=4Vd_hAyRz1FvdfZY",
+                "A full upbeat playlist for happy energy and nonstop pop momentum.",
             ),
             playlist(
                 "Happy Pop Songs",
-                "ekr2nIex040",
-                "A pop-focused happy playlist from your links.",
-            ),
-            playlist(
-                "Happy Playlist 3",
-                "htk6MRjmcnQ",
-                "Another upbeat happy mix from your saved YouTube playlists.",
+                "https://youtube.com/playlist?list=PLos7xCCYivJ94GFKIendd_QA8VW5ElJ6A&si=mfbgT8Sq_xaGcsCn",
+                "A second happy mood playlist with pop-focused songs.",
             ),
         ],
     },
     "sad": {
         "label": "Sad",
-        "description": "Calm and classic-leaning playlists for soft, emotional moods.",
+        "description": "Calm, classic, and emotional playlists for quieter moments.",
         "playlists": [
             playlist(
-                "Sad Calm Classics 1",
-                "K3Qzzggn--s",
-                "A calm and classic sad playlist from your YouTube selection.",
+                "Sad Calm Classics I",
+                "https://youtube.com/playlist?list=PLP32wGpgzmInrTJp4d7z0WwNg-JCMbIls&si=V-pg5X8QOQBDirpn",
+                "A calm classic-style sad playlist for reflective listening.",
             ),
             playlist(
-                "Sad Calm Classics 2",
-                "Jkj36B1YuDU",
-                "A second mellow sad playlist for a gentler mood.",
+                "Sad Calm Classics II",
+                "https://youtube.com/playlist?list=PLvFYFNbi-IBG8Y69zkQkCUW4ZLdwUYFNR&si=87EVJYI_8gTtcS09",
+                "A second mellow sad playlist with soft emotional flow.",
+            ),
+            playlist(
+                "Sad Calm Classics III",
+                "https://youtube.com/playlist?list=PL3-sRm8xAzY-v_i64uZfriFSPYHnQd8Vl&si=SarS47xKRmouaadY",
+                "A third sad mood playlist for calm, classic, and slower listening.",
             ),
         ],
     },
     "focus": {
         "label": "Focus",
-        "description": "Steady background playlists for studying, reading, and concentration.",
+        "description": "Steady background playlists for deep work, study, and concentration.",
         "playlists": [
             playlist(
-                "Focus Playlist 1",
-                "u2ah9tWTkmk",
-                "Your first focus playlist for study and concentration.",
+                "Focus Session I",
+                "https://youtube.com/playlist?list=PLI6s4sEMQX_Tyt5s5x3QGjoym4Xi4S2XM&si=9F3Hmt32ywKjxg-3",
+                "A focused study playlist for concentration and longer sessions.",
             ),
             playlist(
-                "Focus Playlist 2",
-                "tpWLeUt_7Cc",
-                "A second focus mix for longer work sessions.",
+                "Focus Session II",
+                "https://www.youtube.com/watch?v=OUEBskQuPmg&list=RDOUEBskQuPmg&start_radio=1",
+                "A second focus mix that keeps the work session moving.",
+                "OUEBskQuPmg",
             ),
         ],
     },
     "tired": {
         "label": "Tired",
-        "description": "Quiet reset playlists for late nights, rest, and slow mornings.",
+        "description": "Slow, soft playlists for rest, recovery, and relaxed evenings.",
         "playlists": [
             playlist(
-                "Tired Reset 1",
-                "RoxiLsgSCJA",
-                "A soft tired-mood playlist for unwinding.",
+                "Tired Reset I",
+                "https://youtube.com/playlist?list=PLgzTt0k8mXzH2uOsdGcdS6o_051t_e5B4&si=j24NCyJFR9-qdYyd",
+                "A restful playlist for unwinding and slowing the night down.",
             ),
             playlist(
-                "Tired Reset 2",
-                "__UV4QRnkps",
-                "A second calming playlist for rest and recovery.",
-            ),
-            playlist(
-                "Tired Reset 3",
-                "ujAXBVfAlUY",
-                "Another gentle tired playlist from your YouTube picks.",
+                "Tired Reset II",
+                "https://youtube.com/playlist?list=PLkVV3IYWRdoB8CnAyQ-MaD4XKnJBbmrgr&si=w9JPXMqwWyBSe3I5",
+                "A second tired and relaxing playlist for calm recovery time.",
             ),
         ],
     },
