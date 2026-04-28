@@ -47,6 +47,7 @@ def build_recommendation(mood_key: str, playlist_index: int = 0) -> dict | None:
     current["mood_key"] = mood_key
     current["mood_label"] = mood["label"]
     current["mood_description"] = mood["description"]
+    current["mood_quote"] = mood["quote"]
     current["playlist_count"] = len(playlists)
     current["playlist_index"] = safe_index
     current["has_full_playlist_url"] = True

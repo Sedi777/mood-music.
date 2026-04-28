@@ -84,6 +84,7 @@
         <p class="result-label" id="result-label">{{ recommendation.mood_label }} pick</p>
         <h2 id="playlist-title">{{ recommendation.title }}</h2>
         <p class="artist">Curated YouTube playlist</p>
+        <blockquote class="mood-quote" id="mood-quote">{{ recommendation.mood_quote }}</blockquote>
         <p class="result-description" id="mood-description">{{ recommendation.mood_description }}</p>
         <p class="playlist-note" id="playlist-note">{{ recommendation.note }}</p>
         <div class="actions">
@@ -148,6 +149,7 @@
       const posterTitle = document.getElementById("poster-title");
       const posterFooter = document.getElementById("poster-footer");
       const playlistNote = document.getElementById("playlist-note");
+      const moodQuote = document.getElementById("mood-quote");
       const footnote = document.getElementById("footnote");
       const chips = Array.from(document.querySelectorAll(".playlist-chip"));
       const playAllButton = document.querySelector('.actions .ghost-link');
@@ -169,6 +171,7 @@
         playlistTitle.textContent = current.title;
         posterTitle.textContent = current.title;
         posterFooter.textContent = `Playlist ${index + 1} / ${playlistData.length}`;
+        moodQuote.textContent = current.mood_quote;
         playlistNote.textContent = current.note;
         document.getElementById("mood-description").textContent = moodDescription;
         footnote.textContent = `Showing playlist ${index + 1} of ${playlistData.length} in the ${moodLabel.toLowerCase()} mood.`;

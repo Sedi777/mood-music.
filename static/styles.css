@@ -281,6 +281,18 @@ h2 {
   line-height: 1.6;
 }
 
+.mood-quote {
+  margin: 18px 0 0;
+  padding: 14px 16px;
+  border-left: 4px solid rgba(239, 127, 169, 0.7);
+  border-radius: 0 16px 16px 0;
+  background: rgba(255, 244, 248, 0.9);
+  color: var(--accent-dark);
+  font-family: "Instrument Serif", serif;
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
 .playlist-switcher {
   display: flex;
   flex-wrap: wrap;

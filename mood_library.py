@@ -17,6 +17,7 @@ MOOD_LIBRARY = {
     "happy": {
         "label": "Happy",
         "description": "Bright, catchy playlist picks for a feel-good mood lift.",
+        "quote": "Let yourself feel the joy fully. Lightness is not silly, it is strength.",
         "playlists": [
             playlist(
                 "Happy Hit Mix",
@@ -33,6 +34,7 @@ MOOD_LIBRARY = {
     "sad": {
         "label": "Sad",
         "description": "Calm, classic, and emotional playlists for quieter moments.",
+        "quote": "Even the heaviest heart softens with time. Rest here, breathe, and keep going.",
         "playlists": [
             playlist(
                 "Sad Calm Classics I",
@@ -54,6 +56,7 @@ MOOD_LIBRARY = {
     "focus": {
         "label": "Focus",
         "description": "Steady background playlists for deep work, study, and concentration.",
+        "quote": "Small steady steps still build something beautiful. Keep your mind where your future is.",
         "playlists": [
             playlist(
                 "Focus Session I",
@@ -71,6 +74,7 @@ MOOD_LIBRARY = {
     "tired": {
         "label": "Tired",
         "description": "Slow, soft playlists for rest, recovery, and relaxed evenings.",
+        "quote": "Rest is not falling behind. It is how you return to yourself with more strength.",
         "playlists": [
             playlist(
                 "Tired Reset I",
