@@ -27,8 +27,13 @@
       <section class="hero-panel">
         <div class="hero-orb hero-orb-one"></div>
         <div class="hero-orb hero-orb-two"></div>
+        <div class="kitty-badge" aria-hidden="true">
+          <span class="kitty-bow-left"></span>
+          <span class="kitty-bow-center"></span>
+          <span class="kitty-bow-right"></span>
+        </div>
         <div class="hero-copy">
-          <p class="eyebrow">Curated playlist website</p>
+          <p class="eyebrow">Soft pink playlist room</p>
           <h1>{{ app_name }}</h1>
           <p class="intro">
             Four focused moods, your exact YouTube playlists, and a player that
@@ -61,6 +66,11 @@
       <section class="result-card">
         {% if recommendation %}
         <div class="playlist-poster mood-{{ selected_mood }}" id="playlist-poster">
+          <div class="poster-sparkles" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
           <div class="poster-topline">{{ recommendation.mood_label }} mood</div>
           <div class="poster-title" id="poster-title">{{ recommendation.title }}</div>
           <div class="poster-bars" aria-hidden="true">
