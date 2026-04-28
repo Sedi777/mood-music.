@@ -99,14 +99,18 @@
           {% endfor %}
         </form>
         <div class="video-frame">
-          <div
+          <iframe
             id="youtube-player"
+            src="{{ recommendation.embed_url }}"
+            title="{{ recommendation.title }}"
             data-start-index="{{ recommendation.playlist_index }}"
             data-playlists='{{ active_playlist_data | tojson }}'
             data-mood-label="{{ recommendation.mood_label }}"
             data-mood-description="{{ recommendation.mood_description }}"
             data-selected-mood="{{ selected_mood }}"
-          ></div>
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
         </div>
         <p class="footnote" id="footnote">
           Showing playlist {{ recommendation.playlist_index + 1 }} of
@@ -202,14 +206,6 @@
 
       window.onYouTubeIframeAPIReady = function () {
         player = new YT.Player("youtube-player", {
-          width: "100%",
-          height: "100%",
-          playerVars: {
-            listType: "playlist",
-            list: playlistData[currentIndex].playlist_id,
-            rel: 0,
-            modestbranding: 1,
-          },
           events: {
             onReady: onPlayerReady,
             onStateChange: onPlayerStateChange,

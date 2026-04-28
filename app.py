@@ -20,7 +20,7 @@ def parse_playlist_data(playlist_url: str) -> tuple[str | None, str | None]:
 
 
 def youtube_embed_url(playlist_id: str) -> str:
-    return f"https://www.youtube.com/embed/videoseries?list={playlist_id}&enablejsapi=1&rel=0"
+    return f"https://www.youtube.com/embed?listType=playlist&list={playlist_id}&enablejsapi=1&rel=0"
 
 
 def youtube_art_url(video_id: str | None) -> str | None:
