@@ -51,6 +51,10 @@ def build_recommendation(mood_key: str, playlist_index: int = 0) -> dict | None:
     current["mood_quote"] = mood["quotes"][safe_index % len(mood["quotes"])]
     current["playlist_count"] = len(playlists)
     current["playlist_index"] = safe_index
+    current["track_count"] = current.get("track_count")
+    current["track_label"] = current.get("track_label") or (
+        f"{current['track_count']} songs" if current.get("track_count") else "Playlist"
+    )
     current["has_full_playlist_url"] = True
     return current
 
@@ -72,6 +76,15 @@ def index():
             "label": mood["label"],
             "description": mood["description"],
             "count": len(mood["playlists"]),
+            "total_tracks": sum(
+                playlist.get("track_count", 0)
+                for playlist in mood["playlists"]
+                if playlist.get("track_count")
+            ),
+            "has_unknown_total": any(
+                playlist.get("track_label") == "Radio mix"
+                for playlist in mood["playlists"]
+            ),
         }
         for mood_key, mood in MOOD_LIBRARY.items()
     ]

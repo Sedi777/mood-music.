@@ -57,7 +57,13 @@
           >
             <span class="mood-name">{{ mood.label }}</span>
             <span class="mood-description">{{ mood.description }}</span>
-            <span class="mood-count">{{ mood.count }} playlists</span>
+            <span class="mood-count">
+              {% if mood.has_unknown_total %}
+              {{ mood.total_tracks }}+ songs
+              {% else %}
+              {{ mood.total_tracks }} songs
+              {% endif %}
+            </span>
           </button>
           {% endfor %}
         </form>
@@ -79,7 +85,7 @@
             <span></span>
             <span></span>
           </div>
-          <div class="poster-footer" id="poster-footer">Playlist {{ recommendation.playlist_index + 1 }} / {{ recommendation.playlist_count }}</div>
+          <div class="poster-footer" id="poster-footer">{{ recommendation.track_label }}</div>
         </div>
         <p class="result-label" id="result-label">{{ recommendation.mood_label }} pick</p>
         <h2 id="playlist-title">{{ recommendation.title }}</h2>
@@ -105,7 +111,7 @@
             class="playlist-chip{% if recommendation.playlist_index == loop.index0 %} is-active{% endif %}"
             data-playlist-index="{{ loop.index0 }}"
           >
-            {{ playlist.title }}
+            {{ playlist.title }}{% if playlist.track_label %} · {{ playlist.track_label }}{% elif playlist.track_count %} · {{ playlist.track_count }} songs{% endif %}
           </button>
           {% endfor %}
         </form>
@@ -125,8 +131,9 @@
           ></iframe>
         </div>
         <p class="footnote" id="footnote">
-          Showing playlist {{ recommendation.playlist_index + 1 }} of
-          {{ recommendation.playlist_count }} in the
+          {{ recommendation.track_label }} in playlist
+          {{ recommendation.playlist_index + 1 }} of
+          {{ recommendation.playlist_count }} for the
           {{ recommendation.mood_label|lower }} mood.
         </p>
         {% else %}
@@ -185,10 +192,10 @@
         const current = playlistData[index];
         playlistTitle.textContent = current.title;
         posterTitle.textContent = current.title;
-        posterFooter.textContent = `Playlist ${index + 1} / ${playlistData.length}`;
+        posterFooter.textContent = current.track_label;
         playlistNote.textContent = current.note;
         document.getElementById("mood-description").textContent = moodDescription;
-        footnote.textContent = `${playlistData.length} playlists are queued in the ${moodLabel.toLowerCase()} mood.`;
+        footnote.textContent = `${current.track_label} in playlist ${index + 1} of ${playlistData.length} for the ${moodLabel.toLowerCase()} mood.`;
         updateActionButtons(current);
         chips.forEach((chip) => {
           chip.classList.toggle("is-active", Number(chip.dataset.playlistIndex) === index);
