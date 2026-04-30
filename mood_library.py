@@ -17,7 +17,9 @@ MOOD_LIBRARY = {
     "happy": {
         "label": "Happy",
         "description": "Bright, catchy playlist picks for a feel-good mood lift.",
-        "quote": "Love is the center of the universe. It can heal anything inside us.",
+        "quotes": [
+            "Love is the center of the universe. It can heal anything inside us.",
+        ],
         "playlists": [
             playlist(
                 "Happy Hit Mix",
@@ -34,7 +36,11 @@ MOOD_LIBRARY = {
     "sad": {
         "label": "Sad",
         "description": "Calm, classic, and emotional playlists for quieter moments.",
-        "quote": "The tighter you hold on to someone, the more they want to slip away.",
+        "quotes": [
+            "The tighter you hold on to someone, the more they want to slip away.",
+            "I give myself a good cry if I need it, but then I concentrate on all the good things still in my life.",
+            "You may not control all the events that happen to you, but you can decide not to be reduced by them.",
+        ],
         "playlists": [
             playlist(
                 "Sad Calm Classics I",
@@ -56,7 +62,14 @@ MOOD_LIBRARY = {
     "focus": {
         "label": "Focus",
         "description": "Steady background playlists for deep work, study, and concentration.",
-        "quote": "Small steady steps still build something beautiful. Keep your mind where your future is.",
+        "quotes": [
+            "Stop letting people who do so little for you control so much of your mind, feelings, and emotions.",
+            "People grow through experience if they meet life honestly and courageously. This is how character is built.",
+            "If you are not willing to risk the unusual, you will have to settle for the ordinary.",
+            "What we fear doing most is usually what we most need to do.",
+            "Most of us have two lives: the life we live, and the unlived life within us.",
+            "Those who have a why to live can bear almost any how.",
+        ],
         "playlists": [
             playlist(
                 "Focus Session I",
@@ -74,7 +87,10 @@ MOOD_LIBRARY = {
     "tired": {
         "label": "Tired",
         "description": "Slow, soft playlists for rest, recovery, and relaxed evenings.",
-        "quote": "Rest is not falling behind. It is how you return to yourself with more strength.",
+        "quotes": [
+            "Rest is not falling behind. It is how you return to yourself with more strength.",
+            "You may not control all the events that happen to you, but you can decide not to be reduced by them.",
+        ],
         "playlists": [
             playlist(
                 "Tired Reset I",

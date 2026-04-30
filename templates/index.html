@@ -116,6 +116,7 @@
             title="{{ recommendation.title }}"
             data-start-index="{{ recommendation.playlist_index }}"
             data-playlists='{{ active_playlist_data | tojson }}'
+            data-mood-quotes='{{ recommendation.mood_quotes | tojson }}'
             data-mood-label="{{ recommendation.mood_label }}"
             data-mood-description="{{ recommendation.mood_description }}"
             data-selected-mood="{{ selected_mood }}"
@@ -142,6 +143,7 @@
     <script>
       const playerRoot = document.getElementById("youtube-player");
       const playlistData = JSON.parse(playerRoot.dataset.playlists);
+      const moodQuotes = JSON.parse(playerRoot.dataset.moodQuotes);
       const moodLabel = playerRoot.dataset.moodLabel;
       const moodDescription = playerRoot.dataset.moodDescription;
       const selectedMood = playerRoot.dataset.selectedMood;
@@ -153,8 +155,21 @@
       const footnote = document.getElementById("footnote");
       const chips = Array.from(document.querySelectorAll(".playlist-chip"));
       const playAllButton = document.querySelector('.actions .ghost-link');
+      const quoteStorageKey = `moodmix-quote-${selectedMood}`;
       let currentIndex = Number(playerRoot.dataset.startIndex || 0);
+      let quoteCursor = Number(localStorage.getItem(quoteStorageKey) || 0) % Math.max(moodQuotes.length, 1);
       let player;
+
+      function updateQuote(advance = false) {
+        if (!moodQuotes.length) {
+          return;
+        }
+        if (advance) {
+          quoteCursor = (quoteCursor + 1) % moodQuotes.length;
+        }
+        moodQuote.textContent = moodQuotes[quoteCursor];
+        localStorage.setItem(quoteStorageKey, String(quoteCursor));
+      }
 
       function updateActionButtons(current) {
         const openButton = document.querySelector(".actions a");
@@ -171,10 +186,9 @@
         playlistTitle.textContent = current.title;
         posterTitle.textContent = current.title;
         posterFooter.textContent = `Playlist ${index + 1} / ${playlistData.length}`;
-        moodQuote.textContent = current.mood_quote;
         playlistNote.textContent = current.note;
         document.getElementById("mood-description").textContent = moodDescription;
-        footnote.textContent = `Showing playlist ${index + 1} of ${playlistData.length} in the ${moodLabel.toLowerCase()} mood.`;
+        footnote.textContent = `${playlistData.length} playlists are queued in the ${moodLabel.toLowerCase()} mood.`;
         updateActionButtons(current);
         chips.forEach((chip) => {
           chip.classList.toggle("is-active", Number(chip.dataset.playlistIndex) === index);
@@ -185,6 +199,7 @@
         currentIndex = index;
         const current = playlistData[currentIndex];
         updatePlaylistDetails(currentIndex);
+        updateQuote(true);
         if (player && typeof player.loadPlaylist === "function") {
           player.loadPlaylist({
             listType: "playlist",
@@ -209,6 +224,7 @@
 
       function onPlayerReady() {
         updatePlaylistDetails(currentIndex);
+        updateQuote(false);
       }
 
       function onPlayerStateChange(event) {
