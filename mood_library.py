@@ -17,7 +17,7 @@ MOOD_LIBRARY = {
     "happy": {
         "label": "Happy",
         "description": "Bright, catchy playlist picks for a feel-good mood lift.",
-        "quote": "Let yourself feel the joy fully. Lightness is not silly, it is strength.",
+        "quote": "Love is the center of the universe. It can heal anything inside us.",
         "playlists": [
             playlist(
                 "Happy Hit Mix",
@@ -34,7 +34,7 @@ MOOD_LIBRARY = {
     "sad": {
         "label": "Sad",
         "description": "Calm, classic, and emotional playlists for quieter moments.",
-        "quote": "Even the heaviest heart softens with time. Rest here, breathe, and keep going.",
+        "quote": "The tighter you hold on to someone, the more they want to slip away.",
         "playlists": [
             playlist(
                 "Sad Calm Classics I",
