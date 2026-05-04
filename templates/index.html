@@ -37,6 +37,7 @@
         </div>
 
         <form method="post" class="mood-grid">
+          <input type="hidden" name="action" value="select_mood" />
           {% for mood in mood_cards %}
           <button
             type="submit"
@@ -49,6 +50,44 @@
           </button>
           {% endfor %}
         </form>
+
+        <section class="quote-wall">
+          <div class="quote-wall-head">
+            <h2 class="quote-wall-title">Share a Quote</h2>
+          </div>
+          <form method="post" class="quote-form">
+            <input type="hidden" name="action" value="share_quote" />
+            <input type="hidden" name="mood" value="{{ selected_mood }}" />
+            <input
+              type="text"
+              name="author"
+              maxlength="40"
+              placeholder="Your name"
+              class="quote-input"
+            />
+            <textarea
+              name="quote"
+              maxlength="280"
+              placeholder="Write something beautiful..."
+              class="quote-textarea"
+            ></textarea>
+            {% if quote_error %}
+            <p class="quote-error">{{ quote_error }}</p>
+            {% endif %}
+            <button type="submit" class="quote-submit">Post Quote</button>
+          </form>
+
+          {% if shared_quotes %}
+          <div class="quote-list">
+            {% for item in shared_quotes %}
+            <article class="shared-quote-card">
+              <p class="shared-quote-text">“{{ item.quote }}”</p>
+              <p class="shared-quote-meta">{{ item.author }} · {{ item.mood|title }}</p>
+            </article>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </section>
       </section>
 
       <section class="result-card">

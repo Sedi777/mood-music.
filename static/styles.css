@@ -205,6 +205,99 @@ h2 {
 .mood-tired { background: var(--tired); }
 .mood-focus { background: var(--focus); }
 
+.quote-wall {
+  margin-top: 22px;
+  padding: 22px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+.quote-wall-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.quote-wall-title {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.1;
+}
+
+.quote-form {
+  margin-top: 16px;
+}
+
+.quote-input,
+.quote-textarea {
+  width: 100%;
+  border: 1px solid rgba(201, 91, 133, 0.14);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text);
+  font: inherit;
+  padding: 14px 16px;
+}
+
+.quote-input::placeholder,
+.quote-textarea::placeholder {
+  color: var(--muted);
+}
+
+.quote-textarea {
+  min-height: 110px;
+  margin-top: 10px;
+  resize: vertical;
+}
+
+.quote-submit {
+  margin-top: 12px;
+  border: 0;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(201, 91, 133, 0.2);
+}
+
+.quote-error {
+  margin: 10px 0 0;
+  color: var(--accent-dark);
+  font-size: 0.92rem;
+}
+
+.quote-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.shared-quote-card {
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+.shared-quote-text {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.55;
+}
+
+.shared-quote-meta {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  text-transform: capitalize;
+}
+
 .actions {
   margin: 24px 0 20px;
   display: flex;

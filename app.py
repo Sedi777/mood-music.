@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import sqlite3
 from urllib.parse import parse_qs, urlparse
 
 from flask import Flask, jsonify, render_template, request
@@ -9,6 +10,59 @@ from mood_library import APP_NAME, MOOD_LIBRARY
 
 
 app = Flask(__name__)
+
+DB_PATH = os.path.join(os.path.dirname(__file__), "quotes.db")
+
+
+def get_db_connection() -> sqlite3.Connection:
+    connection = sqlite3.connect(DB_PATH)
+    connection.row_factory = sqlite3.Row
+    return connection
+
+
+def init_db() -> None:
+    connection = get_db_connection()
+    connection.execute(
+        """
+        CREATE TABLE IF NOT EXISTS shared_quotes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            author TEXT NOT NULL,
+            quote TEXT NOT NULL,
+            mood TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+        """
+    )
+    connection.commit()
+    connection.close()
+
+
+def save_shared_quote(author: str, quote: str, mood: str) -> None:
+    connection = get_db_connection()
+    connection.execute(
+        "INSERT INTO shared_quotes (author, quote, mood) VALUES (?, ?, ?)",
+        (author, quote, mood),
+    )
+    connection.commit()
+    connection.close()
+
+
+def recent_shared_quotes(limit: int = 8) -> list[dict]:
+    connection = get_db_connection()
+    rows = connection.execute(
+        """
+        SELECT author, quote, mood
+        FROM shared_quotes
+        ORDER BY id DESC
+        LIMIT ?
+        """,
+        (limit,),
+    ).fetchall()
+    connection.close()
+    return [dict(row) for row in rows]
+
+
+init_db()
 
 
 def parse_playlist_data(playlist_url: str) -> tuple[str | None, str | None]:
@@ -63,10 +117,21 @@ def build_recommendation(mood_key: str, playlist_index: int = 0) -> dict | None:
 def index():
     selected_mood = "happy"
     selected_playlist_index = 0
+    quote_error = ""
 
     if request.method == "POST":
+        action = request.form.get("action", "select_mood")
         selected_mood = request.form.get("mood", "happy").lower()
-        selected_playlist_index = int(request.form.get("playlist_index", "0"))
+
+        if action == "share_quote":
+            author = request.form.get("author", "").strip() or "Anonymous"
+            quote = request.form.get("quote", "").strip()
+            if quote:
+                save_shared_quote(author[:40], quote[:280], selected_mood)
+            else:
+                quote_error = "Please write a quote first."
+        else:
+            selected_playlist_index = int(request.form.get("playlist_index", "0"))
 
     recommendation = build_recommendation(selected_mood, selected_playlist_index)
 
@@ -95,6 +160,7 @@ def index():
         build_recommendation(selected_mood, index)
         for index in range(len(active_playlists))
     ]
+    shared_quotes = recent_shared_quotes()
 
     return render_template(
         "index.html",
@@ -106,6 +172,8 @@ def index():
         total_playlists=total_playlists,
         active_playlists=active_playlists,
         active_playlist_data=active_playlist_data,
+        shared_quotes=shared_quotes,
+        quote_error=quote_error,
     )
 
 
