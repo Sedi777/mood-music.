@@ -33,18 +33,7 @@
           <span class="kitty-bow-right"></span>
         </div>
         <div class="hero-copy">
-          <p class="eyebrow">Soft pink playlist room</p>
           <h1>{{ app_name }}</h1>
-          <p class="intro">
-            Four focused moods, your exact YouTube playlists, and a player that
-            stays inside each playlist until it finishes before moving on.
-          </p>
-          <div class="hero-meta">
-            <span>{{ total_moods }} moods</span>
-            <span>{{ total_playlists }} playlists</span>
-            <span>Playlists stay in order</span>
-            <span>Modern mood player</span>
-          </div>
         </div>
 
         <form method="post" class="mood-grid">
@@ -56,7 +45,6 @@
             class="mood-button mood-{{ mood.key }}{% if selected_mood == mood.key %} is-active{% endif %}"
           >
             <span class="mood-name">{{ mood.label }}</span>
-            <span class="mood-description">{{ mood.description }}</span>
             <span class="mood-count">
               {% if mood.has_unknown_total %}
               {{ mood.total_tracks }}+ songs
@@ -87,12 +75,8 @@
           </div>
           <div class="poster-footer" id="poster-footer">{{ recommendation.track_label }}</div>
         </div>
-        <p class="result-label" id="result-label">{{ recommendation.mood_label }} pick</p>
         <h2 id="playlist-title">{{ recommendation.title }}</h2>
-        <p class="artist">Curated YouTube playlist</p>
         <blockquote class="mood-quote" id="mood-quote">{{ recommendation.mood_quote }}</blockquote>
-        <p class="result-description" id="mood-description">{{ recommendation.mood_description }}</p>
-        <p class="playlist-note" id="playlist-note">{{ recommendation.note }}</p>
         <div class="actions">
           <a href="{{ recommendation.url }}" target="_blank" rel="noreferrer">
             Open on YouTube
@@ -130,18 +114,8 @@
             allowfullscreen
           ></iframe>
         </div>
-        <p class="footnote" id="footnote">
-          {{ recommendation.track_label }} in playlist
-          {{ recommendation.playlist_index + 1 }} of
-          {{ recommendation.playlist_count }} for the
-          {{ recommendation.mood_label|lower }} mood.
-        </p>
         {% else %}
-        <p class="result-label">Ready</p>
         <h2>Your recommendation will show up here.</h2>
-        <p class="artist">
-          Choose a mood to get a random song and a playable preview.
-        </p>
         {% endif %}
       </section>
     </main>
@@ -152,14 +126,11 @@
       const playlistData = JSON.parse(playerRoot.dataset.playlists);
       const moodQuotes = JSON.parse(playerRoot.dataset.moodQuotes);
       const moodLabel = playerRoot.dataset.moodLabel;
-      const moodDescription = playerRoot.dataset.moodDescription;
       const selectedMood = playerRoot.dataset.selectedMood;
       const playlistTitle = document.getElementById("playlist-title");
       const posterTitle = document.getElementById("poster-title");
       const posterFooter = document.getElementById("poster-footer");
-      const playlistNote = document.getElementById("playlist-note");
       const moodQuote = document.getElementById("mood-quote");
-      const footnote = document.getElementById("footnote");
       const chips = Array.from(document.querySelectorAll(".playlist-chip"));
       const playAllButton = document.querySelector('.actions .ghost-link');
       const quoteStorageKey = `moodmix-quote-${selectedMood}`;
@@ -193,9 +164,6 @@
         playlistTitle.textContent = current.title;
         posterTitle.textContent = current.title;
         posterFooter.textContent = current.track_label;
-        playlistNote.textContent = current.note;
-        document.getElementById("mood-description").textContent = moodDescription;
-        footnote.textContent = `${current.track_label} in playlist ${index + 1} of ${playlistData.length} for the ${moodLabel.toLowerCase()} mood.`;
         updateActionButtons(current);
         chips.forEach((chip) => {
           chip.classList.toggle("is-active", Number(chip.dataset.playlistIndex) === index);
