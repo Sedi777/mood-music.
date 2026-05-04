@@ -45,13 +45,7 @@
             class="mood-button mood-{{ mood.key }}{% if selected_mood == mood.key %} is-active{% endif %}"
           >
             <span class="mood-name">{{ mood.label }}</span>
-            <span class="mood-count">
-              {% if mood.has_unknown_total %}
-              {{ mood.total_tracks }}+ songs
-              {% else %}
-              {{ mood.total_tracks }} songs
-              {% endif %}
-            </span>
+            <span class="mood-count">100+ songs</span>
           </button>
           {% endfor %}
         </form>
