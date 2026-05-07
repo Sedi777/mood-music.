@@ -37,11 +37,11 @@ def init_db() -> None:
     connection.close()
 
 
-def save_shared_quote(author: str, quote: str, mood: str) -> None:
+def save_shared_quote(author: str, quote: str) -> None:
     connection = get_db_connection()
     connection.execute(
         "INSERT INTO shared_quotes (author, quote, mood) VALUES (?, ?, ?)",
-        (author, quote, mood),
+        (author, quote, ""),
     )
     connection.commit()
     connection.close()
@@ -51,7 +51,7 @@ def recent_shared_quotes(limit: int = 8) -> list[dict]:
     connection = get_db_connection()
     rows = connection.execute(
         """
-        SELECT author, quote, mood
+        SELECT author, quote
         FROM shared_quotes
         ORDER BY id DESC
         LIMIT ?
@@ -127,7 +127,7 @@ def index():
             author = request.form.get("author", "").strip() or "Anonymous"
             quote = request.form.get("quote", "").strip()
             if quote:
-                save_shared_quote(author[:40], quote[:280], selected_mood)
+                save_shared_quote(author[:40], quote[:280])
             else:
                 quote_error = "Please write a quote first."
         else:
