@@ -86,9 +86,35 @@
             </article>
             {% endfor %}
           </div>
+          {% if all_shared_quotes|length > shared_quotes|length %}
+          <button type="button" class="quote-more-button" data-open-quote-modal>
+            See more quotes
+          </button>
+          {% endif %}
           {% endif %}
         </section>
       </section>
+
+      {% if all_shared_quotes|length > shared_quotes|length %}
+      <dialog class="quote-modal" data-quote-modal>
+        <div class="quote-modal-card">
+          <div class="quote-modal-head">
+            <h2 class="quote-modal-title">Shared Quotes</h2>
+            <button type="button" class="quote-modal-close" data-close-quote-modal aria-label="Close">
+              Close
+            </button>
+          </div>
+          <div class="quote-modal-list">
+            {% for item in all_shared_quotes %}
+            <article class="shared-quote-card">
+              <p class="shared-quote-text">“{{ item.quote }}”</p>
+              <p class="shared-quote-meta">{{ item.author }}</p>
+            </article>
+            {% endfor %}
+          </div>
+        </div>
+      </dialog>
+      {% endif %}
 
       <section class="result-card">
         {% if recommendation %}
@@ -151,6 +177,30 @@
         {% endif %}
       </section>
     </main>
+    {% if all_shared_quotes|length > shared_quotes|length %}
+    <script>
+      const quoteModal = document.querySelector("[data-quote-modal]");
+      const openQuoteModal = document.querySelector("[data-open-quote-modal]");
+      const closeQuoteModal = document.querySelector("[data-close-quote-modal]");
+
+      if (quoteModal && openQuoteModal && closeQuoteModal) {
+        openQuoteModal.addEventListener("click", () => quoteModal.showModal());
+        closeQuoteModal.addEventListener("click", () => quoteModal.close());
+        quoteModal.addEventListener("click", (event) => {
+          const bounds = quoteModal.getBoundingClientRect();
+          const clickedBackdrop =
+            event.clientX < bounds.left ||
+            event.clientX > bounds.right ||
+            event.clientY < bounds.top ||
+            event.clientY > bounds.bottom;
+
+          if (clickedBackdrop) {
+            quoteModal.close();
+          }
+        });
+      }
+    </script>
+    {% endif %}
     {% if recommendation %}
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>

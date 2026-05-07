@@ -47,7 +47,7 @@ def save_shared_quote(author: str, quote: str) -> None:
     connection.close()
 
 
-def recent_shared_quotes(limit: int = 8) -> list[dict]:
+def recent_shared_quotes(limit: int = 100) -> list[dict]:
     connection = get_db_connection()
     rows = connection.execute(
         """
@@ -160,7 +160,8 @@ def index():
         build_recommendation(selected_mood, index)
         for index in range(len(active_playlists))
     ]
-    shared_quotes = recent_shared_quotes()
+    all_shared_quotes = recent_shared_quotes(100)
+    visible_shared_quotes = all_shared_quotes[:10]
 
     return render_template(
         "index.html",
@@ -172,7 +173,8 @@ def index():
         total_playlists=total_playlists,
         active_playlists=active_playlists,
         active_playlist_data=active_playlist_data,
-        shared_quotes=shared_quotes,
+        shared_quotes=visible_shared_quotes,
+        all_shared_quotes=all_shared_quotes,
         quote_error=quote_error,
     )
 
