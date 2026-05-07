@@ -31,13 +31,13 @@ MOOD_LIBRARY = {
         ],
         "playlists": [
             playlist(
-                "Happy Hit Mix",
+                "Happy Hits",
                 "https://youtube.com/playlist?list=PLOHoVaTp8R7d3L_pjuwIa6nRh4tH5nI4x&si=4Vd_hAyRz1FvdfZY",
                 "A full upbeat playlist for happy energy and nonstop pop momentum.",
                 track_count=100,
             ),
             playlist(
-                "Happy Pop Songs",
+                "Happy Pop",
                 "https://youtube.com/playlist?list=PLos7xCCYivJ94GFKIendd_QA8VW5ElJ6A&si=mfbgT8Sq_xaGcsCn",
                 "A second happy mood playlist with pop-focused songs.",
                 track_count=100,
@@ -54,19 +54,19 @@ MOOD_LIBRARY = {
         ],
         "playlists": [
             playlist(
-                "Sad Calm Classics I",
+                "Sad Calm Classic",
                 "https://youtube.com/playlist?list=PLP32wGpgzmInrTJp4d7z0WwNg-JCMbIls&si=V-pg5X8QOQBDirpn",
                 "A calm classic-style sad playlist for reflective listening.",
                 track_count=100,
             ),
             playlist(
-                "Sad Calm Classics II",
+                "Sad Soft Classic",
                 "https://youtube.com/playlist?list=PLvFYFNbi-IBG8Y69zkQkCUW4ZLdwUYFNR&si=87EVJYI_8gTtcS09",
                 "A second mellow sad playlist with soft emotional flow.",
                 track_count=90,
             ),
             playlist(
-                "Sad Calm Classics III",
+                "Sad Evening Classic",
                 "https://youtube.com/playlist?list=PL3-sRm8xAzY-v_i64uZfriFSPYHnQd8Vl&si=SarS47xKRmouaadY",
                 "A third sad mood playlist for calm, classic, and slower listening.",
                 track_count=120,
@@ -86,13 +86,13 @@ MOOD_LIBRARY = {
         ],
         "playlists": [
             playlist(
-                "Focus Session I",
+                "Focus Study",
                 "https://youtube.com/playlist?list=PLI6s4sEMQX_Tyt5s5x3QGjoym4Xi4S2XM&si=9F3Hmt32ywKjxg-3",
                 "A focused study playlist for concentration and longer sessions.",
                 track_count=202,
             ),
             playlist(
-                "Focus Session II",
+                "Focus Flow",
                 "https://www.youtube.com/watch?v=OUEBskQuPmg&list=RDOUEBskQuPmg&start_radio=1",
                 "A second focus mix that keeps the work session moving.",
                 "OUEBskQuPmg",
@@ -110,13 +110,13 @@ MOOD_LIBRARY = {
         ],
         "playlists": [
             playlist(
-                "Tired Reset I",
+                "Tired Rest",
                 "https://youtube.com/playlist?list=PLgzTt0k8mXzH2uOsdGcdS6o_051t_e5B4&si=j24NCyJFR9-qdYyd",
                 "A restful playlist for unwinding and slowing the night down.",
                 track_count=110,
             ),
             playlist(
-                "Tired Reset II",
+                "Tired Unwind",
                 "https://youtube.com/playlist?list=PLkVV3IYWRdoB8CnAyQ-MaD4XKnJBbmrgr&si=w9JPXMqwWyBSe3I5",
                 "A second tired and relaxing playlist for calm recovery time.",
                 track_count=15,

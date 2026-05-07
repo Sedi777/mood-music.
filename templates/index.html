@@ -106,7 +106,6 @@
             <span></span>
             <span></span>
           </div>
-          <div class="poster-footer" id="poster-footer">{{ recommendation.track_label }}</div>
         </div>
         <h2 id="playlist-title">{{ recommendation.title }}</h2>
         <div class="video-frame">
@@ -143,7 +142,7 @@
             class="playlist-chip{% if recommendation.playlist_index == loop.index0 %} is-active{% endif %}"
             data-playlist-index="{{ loop.index0 }}"
           >
-            {{ playlist.title }}{% if playlist.track_label %} · {{ playlist.track_label }}{% elif playlist.track_count %} · {{ playlist.track_count }} songs{% endif %}
+            {{ playlist.title }}
           </button>
           {% endfor %}
         </form>
@@ -162,7 +161,6 @@
       const selectedMood = playerRoot.dataset.selectedMood;
       const playlistTitle = document.getElementById("playlist-title");
       const posterTitle = document.getElementById("poster-title");
-      const posterFooter = document.getElementById("poster-footer");
       const moodQuote = document.getElementById("mood-quote");
       const chips = Array.from(document.querySelectorAll(".playlist-chip"));
       const playAllButton = document.querySelector('.actions .ghost-link');
@@ -196,7 +194,6 @@
         const current = playlistData[index];
         playlistTitle.textContent = current.title;
         posterTitle.textContent = current.title;
-        posterFooter.textContent = current.track_label;
         updateActionButtons(current);
         chips.forEach((chip) => {
           chip.classList.toggle("is-active", Number(chip.dataset.playlistIndex) === index);
