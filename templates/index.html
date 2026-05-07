@@ -109,6 +109,21 @@
           <div class="poster-footer" id="poster-footer">{{ recommendation.track_label }}</div>
         </div>
         <h2 id="playlist-title">{{ recommendation.title }}</h2>
+        <div class="video-frame">
+          <iframe
+            id="youtube-player"
+            src="{{ recommendation.embed_url }}"
+            title="{{ recommendation.title }}"
+            data-start-index="{{ recommendation.playlist_index }}"
+            data-playlists='{{ active_playlist_data | tojson }}'
+            data-mood-quotes='{{ recommendation.mood_quotes | tojson }}'
+            data-mood-label="{{ recommendation.mood_label }}"
+            data-mood-description="{{ recommendation.mood_description }}"
+            data-selected-mood="{{ selected_mood }}"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
         <blockquote class="mood-quote" id="mood-quote">{{ recommendation.mood_quote }}</blockquote>
         <div class="actions">
           <a href="{{ recommendation.url }}" target="_blank" rel="noreferrer">
@@ -132,21 +147,6 @@
           </button>
           {% endfor %}
         </form>
-        <div class="video-frame">
-          <iframe
-            id="youtube-player"
-            src="{{ recommendation.embed_url }}"
-            title="{{ recommendation.title }}"
-            data-start-index="{{ recommendation.playlist_index }}"
-            data-playlists='{{ active_playlist_data | tojson }}'
-            data-mood-quotes='{{ recommendation.mood_quotes | tojson }}'
-            data-mood-label="{{ recommendation.mood_label }}"
-            data-mood-description="{{ recommendation.mood_description }}"
-            data-selected-mood="{{ selected_mood }}"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
-        </div>
         {% else %}
         <h2>Your recommendation will show up here.</h2>
         {% endif %}
