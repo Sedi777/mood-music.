@@ -87,17 +87,15 @@ MOOD_LIBRARY = {
         "playlists": [
             playlist(
                 "Focus Study",
-                "https://youtube.com/playlist?list=PLI6s4sEMQX_Tyt5s5x3QGjoym4Xi4S2XM&si=9F3Hmt32ywKjxg-3",
+                "https://youtube.com/playlist?list=PL9Ck6jKzRuTyqAT-NO6UVfjCoShbewT6Q&si=2eiXTe0DCdP6Fihk",
                 "A focused study playlist for concentration and longer sessions.",
-                track_count=202,
+                track_label="Playlist",
             ),
             playlist(
                 "Focus Flow",
-                "https://www.youtube.com/watch?v=OUEBskQuPmg&list=RDOUEBskQuPmg&start_radio=1",
+                "https://youtube.com/playlist?list=PL8Rya-pco-hTF8g3gJr_4_UY8xmcOWV9M&si=iBn4DE2sJoNDdXPF",
                 "A second focus mix that keeps the work session moving.",
-                "OUEBskQuPmg",
-                track_count=1,
-                track_label="Radio mix",
+                track_label="Playlist",
             ),
         ],
     },
