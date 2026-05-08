@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-APP_NAME = "MoodMix"
+APP_NAME = "Mood Music"
 
 
 def playlist(
