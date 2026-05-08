@@ -133,7 +133,6 @@
             <span></span>
           </div>
         </div>
-        <h2 id="playlist-title">{{ recommendation.title }}</h2>
         <div class="video-frame">
           <iframe
             id="youtube-player"
@@ -195,7 +194,6 @@
       const moodQuotes = JSON.parse(playerRoot.dataset.moodQuotes);
       const moodLabel = playerRoot.dataset.moodLabel;
       const selectedMood = playerRoot.dataset.selectedMood;
-      const playlistTitle = document.getElementById("playlist-title");
       const posterTitle = document.getElementById("poster-title");
       const moodQuote = document.getElementById("mood-quote");
       const chips = Array.from(document.querySelectorAll(".playlist-chip"));
@@ -228,7 +226,6 @@
 
       function updatePlaylistDetails(index) {
         const current = playlistData[index];
-        playlistTitle.textContent = current.title;
         posterTitle.textContent = current.title;
         updateActionButtons(current);
         chips.forEach((chip) => {
