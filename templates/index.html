@@ -158,20 +158,6 @@
             Play Full Playlist
           </a>
         </div>
-        <form method="post" class="playlist-switcher">
-          <input type="hidden" name="mood" value="{{ selected_mood }}" />
-          {% for playlist in active_playlists %}
-          <button
-            type="submit"
-            name="playlist_index"
-            value="{{ loop.index0 }}"
-            class="playlist-chip{% if recommendation.playlist_index == loop.index0 %} is-active{% endif %}"
-            data-playlist-index="{{ loop.index0 }}"
-          >
-            {{ playlist.title }}
-          </button>
-          {% endfor %}
-        </form>
         {% else %}
         <h2>Your recommendation will show up here.</h2>
         {% endif %}
