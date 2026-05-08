@@ -74,7 +74,7 @@ MOOD_LIBRARY = {
         ],
     },
     "focus": {
-        "label": "Focus",
+        "label": "Spotlight",
         "description": "Steady background playlists for deep work, study, and concentration.",
         "quotes": [
             "Stop letting people who do so little for you control so much of your mind, feelings, and emotions.",
