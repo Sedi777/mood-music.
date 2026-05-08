@@ -125,7 +125,7 @@
             <span></span>
           </div>
           <div class="poster-topline">{{ recommendation.mood_label }}</div>
-          <div class="poster-title" id="poster-title">{{ recommendation.title }}</div>
+          <blockquote class="poster-title" id="poster-title">{{ recommendation.mood_quote }}</blockquote>
           <div class="poster-bars" aria-hidden="true">
             <span></span>
             <span></span>
@@ -148,13 +148,9 @@
             allowfullscreen
           ></iframe>
         </div>
-        <blockquote class="mood-quote" id="mood-quote">{{ recommendation.mood_quote }}</blockquote>
         <div class="actions">
           <a href="{{ recommendation.url }}" target="_blank" rel="noreferrer">
             Open on YouTube
-          </a>
-          <a href="{{ recommendation.play_all_url }}" target="_blank" rel="noreferrer" class="ghost-link">
-            Play Full Playlist
           </a>
         </div>
         {% else %}
@@ -192,12 +188,8 @@
       const playerRoot = document.getElementById("youtube-player");
       const playlistData = JSON.parse(playerRoot.dataset.playlists);
       const moodQuotes = JSON.parse(playerRoot.dataset.moodQuotes);
-      const moodLabel = playerRoot.dataset.moodLabel;
       const selectedMood = playerRoot.dataset.selectedMood;
       const posterTitle = document.getElementById("poster-title");
-      const moodQuote = document.getElementById("mood-quote");
-      const chips = Array.from(document.querySelectorAll(".playlist-chip"));
-      const playAllButton = document.querySelector('.actions .ghost-link');
       const quoteStorageKey = `moodmix-quote-${selectedMood}`;
       let currentIndex = Number(playerRoot.dataset.startIndex || 0);
       let quoteCursor = Number(localStorage.getItem(quoteStorageKey) || 0) % Math.max(moodQuotes.length, 1);
@@ -210,7 +202,7 @@
         if (advance) {
           quoteCursor = (quoteCursor + 1) % moodQuotes.length;
         }
-        moodQuote.textContent = moodQuotes[quoteCursor];
+        posterTitle.textContent = moodQuotes[quoteCursor];
         localStorage.setItem(quoteStorageKey, String(quoteCursor));
       }
 
@@ -219,18 +211,11 @@
         if (openButton) {
           openButton.href = current.playlist_url;
         }
-        if (playAllButton) {
-          playAllButton.href = current.playlist_url;
-        }
       }
 
       function updatePlaylistDetails(index) {
         const current = playlistData[index];
-        posterTitle.textContent = current.title;
         updateActionButtons(current);
-        chips.forEach((chip) => {
-          chip.classList.toggle("is-active", Number(chip.dataset.playlistIndex) === index);
-        });
       }
 
       function loadPlaylist(index) {
@@ -252,13 +237,6 @@
         const nextIndex = (currentIndex + 1) % playlistData.length;
         loadPlaylist(nextIndex);
       }
-
-      chips.forEach((chip) => {
-        chip.addEventListener("click", (event) => {
-          event.preventDefault();
-          loadPlaylist(Number(chip.dataset.playlistIndex));
-        });
-      });
 
       function onPlayerReady() {
         updatePlaylistDetails(currentIndex);

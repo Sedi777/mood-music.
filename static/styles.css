@@ -389,24 +389,6 @@ h2 {
   box-shadow: 0 10px 24px rgba(201, 91, 133, 0.2);
 }
 
-.actions .ghost-link {
-  color: var(--text);
-  background: rgba(255, 255, 255, 0.82);
-  box-shadow: none;
-}
-
-.mood-quote {
-  margin: 16px 0 18px;
-  padding: 14px 16px;
-  border-left: 4px solid rgba(239, 127, 169, 0.7);
-  border-radius: 0 16px 16px 0;
-  background: rgba(255, 244, 248, 0.9);
-  color: var(--accent-dark);
-  font-family: "Instrument Serif", serif;
-  font-size: 1.25rem;
-  line-height: 1.35;
-}
-
 .result-card {
   background: var(--panel-strong);
 }
@@ -464,10 +446,12 @@ h2 {
   position: relative;
   z-index: 1;
   margin-top: 16px;
-  max-width: 12ch;
+  margin-bottom: 0;
+  max-width: 16ch;
   font-family: "Instrument Serif", serif;
-  font-size: clamp(2.2rem, 6vw, 3.8rem);
-  line-height: 0.95;
+  font-size: clamp(1.5rem, 3.2vw, 2.15rem);
+  line-height: 1.2;
+  color: var(--accent-dark);
 }
 
 .poster-bars {
